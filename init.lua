@@ -65,7 +65,7 @@
   end
 
 --NODES
-  minetest.register_node('bees:extractor', {
+  minetest.register_node('bees_candles:extractor', {
     description = 'honey extractor',
     tiles = {"bees_extractor.png", "bees_extractor.png", "bees_extractor.png", "bees_extractor.png", "bees_extractor.png", "bees_extractor_front.png"},
     paramtype2 = "facedir",
@@ -95,19 +95,19 @@
     on_timer = function(pos, node)
       local meta = minetest.get_meta(pos)
       local inv  = meta:get_inventory()
-      if not inv:contains_item('frames_filled','bees:frame_full') or not inv:contains_item('bottles_empty','vessels:glass_bottle') then
+      if not inv:contains_item('frames_filled','bees_candles:frame_full') or not inv:contains_item('bottles_empty','vessels:glass_bottle') then
         return
       end
-      if inv:room_for_item('frames_emptied', 'bees:frame_empty') 
-      and inv:room_for_item('wax','bees:wax') 
-      and inv:room_for_item('bottles_full', 'bees:bottle_honey') then
+      if inv:room_for_item('frames_emptied', 'bees_candles:frame_empty') 
+      and inv:room_for_item('wax','bees_candles:wax') 
+      and inv:room_for_item('bottles_full', 'bees_candles:bottle_honey') then
         --add to output
-        inv:add_item('frames_emptied', 'bees:frame_empty')
-        inv:add_item('wax', 'bees:wax')
-        inv:add_item('bottles_full', 'bees:bottle_honey')
+        inv:add_item('frames_emptied', 'bees_candles:frame_empty')
+        inv:add_item('wax', 'bees_candles:wax')
+        inv:add_item('bottles_full', 'bees_candles:bottle_honey')
         --remove from input
         inv:remove_item('bottles_empty','vessels:glass_bottle')
-        inv:remove_item('frames_filled','bees:frame_full')
+        inv:remove_item('frames_filled','bees_candles:frame_full')
         local p = {x=pos.x+math.random()-0.5, y=pos.y+math.random()-0.5, z=pos.z+math.random()-0.5}
         --wax flying all over the place
         minetest.add_particle({
@@ -131,7 +131,7 @@
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
         local timer = minetest.get_node_timer(pos)
-        if stack:get_name() == "bees:frame_full" then
+        if stack:get_name() == "bees_candles:frame_full" then
           if inv:is_empty("frames_filled") then
             timer:start(5)
           end
@@ -147,7 +147,7 @@
       can_insert = function(pos,node,stack,direction)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
-        if stack:get_name() == "bees:frame_full" then
+        if stack:get_name() == "bees_candles:frame_full" then
           return inv:room_for_item("frames_filled",stack)
         elseif stack:get_name() == "vessels:glass_bottle" then
           return inv:room_for_item("bottles_empty",stack)
@@ -166,7 +166,7 @@
       end
     end,
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-      if (listname == 'bottles_empty' and stack:get_name() == 'vessels:glass_bottle') or (listname == 'frames_filled' and stack:get_name() == 'bees:frame_full') then
+      if (listname == 'bottles_empty' and stack:get_name() == 'vessels:glass_bottle') or (listname == 'frames_filled' and stack:get_name() == 'bees_candles:frame_full') then
         return stack:get_count()
       else
         return 0
@@ -177,7 +177,7 @@
     end,
   })
 
-  minetest.register_node('bees:bees', {
+  minetest.register_node('bees_candles:bees', {
     description = 'flying bees',
     drawtype = 'plantlike',
     paramtype = 'light',
@@ -198,7 +198,7 @@
     end,
   })
 
-  minetest.register_node('bees:hive_wild', {
+  minetest.register_node('bees_candles:hive_wild', {
     description = 'wild bee hive',
     tile_images = {'bees_hive_wild.png','bees_hive_wild.png','bees_hive_wild.png', 'bees_hive_wild.png', 'bees_hive_wild_bottom.png'}, --Neuromancer's base texture
     drawtype = 'nodebox',
@@ -207,7 +207,7 @@
     drop = {
       max_items = 6,
       items = {
-        { items = {'bees:honey_comb'}, rarity = 5}
+        { items = {'bees_candles:honey_comb'}, rarity = 5}
       }
     },
     groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,attached_node=1},
@@ -239,7 +239,7 @@
       local stacks = inv:get_list('combs')
       for k, v in pairs(stacks) do
         if inv:get_stack('combs', k):is_empty() then --then replace that with a full one and reset pro..
-          inv:set_stack('combs',k,'bees:honey_comb')
+          inv:set_stack('combs',k,'bees_candles:honey_comb')
           timer:start(1000/#flowers)
           return
         end
@@ -255,15 +255,15 @@
       timer:start(100+math.random(100))
       inv:set_size('queen', 1)
       inv:set_size('combs', 5)
-      inv:set_stack('queen', 1, 'bees:queen')
+      inv:set_stack('queen', 1, 'bees_candles:queen')
       for i=1,math.random(3) do
-        inv:set_stack('combs', i, 'bees:honey_comb')
+        inv:set_stack('combs', i, 'bees_candles:honey_comb')
       end
     end,
     on_punch = function(pos, node, puncher)
       local meta = minetest.get_meta(pos)
       local inv = meta:get_inventory()
-      if inv:contains_item('queen','bees:queen') then
+      if inv:contains_item('queen','bees_candles:queen') then
         local health = puncher:get_hp()
         puncher:set_hp(health-4)
       end
@@ -272,7 +272,7 @@
       local meta = minetest.get_meta(pos)
       local inv  = meta:get_inventory()
       local timer= minetest.get_node_timer(pos)
-      if listname == 'combs' and inv:contains_item('queen', 'bees:queen') then
+      if listname == 'combs' and inv:contains_item('queen', 'bees_candles:queen') then
         local health = taker:get_hp()
         timer:start(10)
         taker:set_hp(health-2)
@@ -285,7 +285,7 @@
       end
     end,
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-      if listname == 'queen' and stack:get_name() == 'bees:queen' then
+      if listname == 'queen' and stack:get_name() == 'bees_candles:queen' then
         return 1
       else
         return 0
@@ -294,12 +294,12 @@
     on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
       minetest.show_formspec(
         clicker:get_player_name(),
-        'bees:hive_artificial',
-        formspecs.hive_wild(pos, (itemstack:get_name() == 'bees:grafting_tool'))
+        'bees_candles:hive_artificial',
+        formspecs.hive_wild(pos, (itemstack:get_name() == 'bees_candles:grafting_tool'))
       )
       local meta = minetest.get_meta(pos)
       local inv  = meta:get_inventory()
-      if meta:get_int('agressive') == 1 and inv:contains_item('queen', 'bees:queen') then
+      if meta:get_int('agressive') == 1 and inv:contains_item('queen', 'bees_candles:queen') then
         local health = clicker:get_hp()
         clicker:set_hp(health-4)
       else
@@ -317,16 +317,16 @@
     end,
     after_dig_node = function(pos, oldnode, oldmetadata, user)
       local wielded if user:get_wielded_item() ~= nil then wielded = user:get_wielded_item() else return end
-      if 'bees:grafting_tool' == wielded:get_name() then 
+      if 'bees_candles:grafting_tool' == wielded:get_name() then 
         local inv = user:get_inventory()
         if inv then
-          inv:add_item('main', ItemStack('bees:queen'))
+          inv:add_item('main', ItemStack('bees_candles:queen'))
         end
       end
     end
   })
 
-  minetest.register_node('bees:hive_artificial', {
+  minetest.register_node('bees_candles:hive_artificial', {
     description = 'bee hive',
     tiles = {'default_wood.png','default_wood.png','default_wood.png', 'default_wood.png','default_wood.png','bees_hive_artificial.png'},
     drawtype = 'nodebox',
@@ -357,12 +357,12 @@
     on_rightclick = function(pos, node, clicker, itemstack)
       minetest.show_formspec(
         clicker:get_player_name(),
-        'bees:hive_artificial',
+        'bees_candles:hive_artificial',
         formspecs.hive_artificial(pos)
       )
       local meta = minetest.get_meta(pos)
       local inv  = meta:get_inventory()
-      if meta:get_int('agressive') == 1 and inv:contains_item('queen', 'bees:queen') then
+      if meta:get_int('agressive') == 1 and inv:contains_item('queen', 'bees_candles:queen') then
         local health = clicker:get_hp()
         clicker:set_hp(health-4)
       else
@@ -373,8 +373,8 @@
       local meta = minetest.get_meta(pos)
       local inv = meta:get_inventory()
       local timer = minetest.get_node_timer(pos)
-      if inv:contains_item('queen', 'bees:queen') then
-        if inv:contains_item('frames', 'bees:frame_empty') then
+      if inv:contains_item('queen', 'bees_candles:queen') then
+        if inv:contains_item('frames', 'bees_candles:frame_empty') then
           timer:start(30)
           local rad  = 10
           local minp = {x=pos.x-rad, y=pos.y-rad, z=pos.z-rad}
@@ -388,9 +388,9 @@
             bees.polinate_flower(flower, minetest.get_node(flower).name)
             local stacks = inv:get_list('frames')
             for k, v in pairs(stacks) do
-              if inv:get_stack('frames', k):get_name() == 'bees:frame_empty' then
+              if inv:get_stack('frames', k):get_name() == 'bees_candles:frame_empty' then
                 meta:set_int('progress', 0)
-                inv:set_stack('frames',k,'bees:frame_full')
+                inv:set_stack('frames',k,'bees_candles:frame_full')
                 return
               end
             end
@@ -430,7 +430,7 @@
       if listname == 'queen' or listname == 'frames' then
         meta:set_string('queen', stack:get_name())
         meta:set_string('infotext','queen is inserted, now for the empty frames');
-        if inv:contains_item('frames', 'bees:frame_empty') then
+        if inv:contains_item('frames', 'bees_candles:frame_empty') then
           timer:start(30)
           meta:set_string('infotext','bees are aclimating');
         end
@@ -439,11 +439,11 @@
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
       if not minetest.get_meta(pos):get_inventory():get_stack(listname, index):is_empty() then return 0 end
       if listname == 'queen' then
-        if stack:get_name():match('bees:queen*') then
+        if stack:get_name():match('bees_candles:queen*') then
           return 1
         end
       elseif listname == 'frames' then
-        if stack:get_name() == ('bees:frame_empty') then
+        if stack:get_name() == ('bees_candles:frame_empty') then
           return 1
         end
       end
@@ -453,7 +453,7 @@
 
 --ABMS
   minetest.register_abm({ --particles
-    nodenames = {'bees:hive_artificial', 'bees:hive_wild', 'bees:hive_industrial'},
+    nodenames = {'bees_candles:hive_artificial', 'bees_candles:hive_wild', 'bees_candles:hive_industrial'},
     interval  = 10,
     chance    = 4,
     action = function(pos)
@@ -477,27 +477,27 @@
     action = function(pos, node, _, _)
       local p = {x=pos.x, y=pos.y-1, z=pos.z}
       if minetest.get_node(p).walkable == false then return end
-      if (minetest.find_node_near(p, 5, 'group:flora') ~= nil and minetest.find_node_near(p, 40, 'bees:hive_wild') == nil) then
-        minetest.add_node(p, {name='bees:hive_wild'})
+      if (minetest.find_node_near(p, 5, 'group:flora') ~= nil and minetest.find_node_near(p, 40, 'bees_candles:hive_wild') == nil) then
+        minetest.add_node(p, {name='bees_candles:hive_wild'})
       end
     end,
   })
 
   minetest.register_abm({ --spawning bees around bee hive
-    nodenames = {'bees:hive_wild', 'bees:hive_artificial', 'bees:hive_industrial'},
+    nodenames = {'bees_candles:hive_wild', 'bees_candles:hive_artificial', 'bees_candles:hive_industrial'},
     neighbors = {'group:flowers', 'group:leaves'},
     interval = 30,
     chance = 4,
     action = function(pos, node, _, _)
       local p = {x=pos.x+math.random(-5,5), y=pos.y-math.random(0,3), z=pos.z+math.random(-5,5)}
       if minetest.get_node(p).name == 'air' then
-        minetest.add_node(p, {name='bees:bees'})
+        minetest.add_node(p, {name='bees_candles:bees'})
       end
     end,
   })
 
   minetest.register_abm({ --remove bees
-    nodenames = {'bees:bees'},
+    nodenames = {'bees_candles:bees'},
     interval = 30,
     chance = 5,
     action = function(pos, node, _, _)
@@ -506,39 +506,39 @@
   })
 
 --ITEMS
-  minetest.register_craftitem('bees:frame_empty', {
+  minetest.register_craftitem('bees_candles:frame_empty', {
     description = 'empty hive frame',
     inventory_image = 'bees_frame_empty.png',
     stack_max = 24,
   })
 
-  minetest.register_craftitem('bees:frame_full', {
+  minetest.register_craftitem('bees_candles:frame_full', {
     description = 'filled hive frame',
     inventory_image = 'bees_frame_full.png',
     stack_max = 12,
   })
 
-  minetest.register_craftitem('bees:bottle_honey', {
+  minetest.register_craftitem('bees_candles:bottle_honey', {
     description = 'honey bottle',
     inventory_image = 'bees_bottle_honey.png',
     stack_max = 12,
     on_use = minetest.item_eat(3, "vessels:glass_bottle"),
   })
   
-  minetest.register_craftitem('bees:wax', {
+  minetest.register_craftitem('bees_candles:wax', {
     description = 'bees wax',
     inventory_image = 'bees_wax.png',
     stack_max = 48,
   })
 
-  minetest.register_craftitem('bees:honey_comb', {
+  minetest.register_craftitem('bees_candles:honey_comb', {
     description = 'honey comb',
     inventory_image = 'bees_comb.png',
     on_use = minetest.item_eat(2),
     stack_max = 8,
   })
 
-  minetest.register_craftitem('bees:queen', {
+  minetest.register_craftitem('bees_candles:queen', {
     description = 'Queen Bee',
     inventory_image = 'bees_particle_bee.png',
     stack_max = 1,
@@ -546,7 +546,7 @@
 
 --CRAFTS
   minetest.register_craft({
-    output = 'bees:extractor',
+    output = 'bees_candles:extractor',
     recipe = {
       {'','default:steel_ingot',''},
       {'default:steel_ingot','default:stick','default:steel_ingot'},
@@ -555,7 +555,7 @@
   })
 
   minetest.register_craft({
-    output = 'bees:smoker',
+    output = 'bees_candles:smoker',
     recipe = {
       {'default:steel_ingot', 'wool:red', ''},
       {'', 'default:torch', ''},
@@ -564,7 +564,7 @@
   })
 
   minetest.register_craft({
-    output = 'bees:hive_artificial',
+    output = 'bees_candles:hive_artificial',
     recipe = {
       {'group:wood','group:wood','group:wood'},
       {'group:wood','default:stick','group:wood'},
@@ -573,7 +573,7 @@
   })
 
   minetest.register_craft({
-    output = 'bees:grafting_tool',
+    output = 'bees_candles:grafting_tool',
     recipe = {
       {'', '', 'default:steel_ingot'},
       {'', 'default:stick', ''},
@@ -582,7 +582,7 @@
   })
   
   minetest.register_craft({
-    output = 'bees:frame_empty',
+    output = 'bees_candles:frame_empty',
     recipe = {
       {'group:wood',  'group:wood',  'group:wood'},
       {'default:stick', 'default:stick', 'default:stick'},
@@ -591,7 +591,7 @@
   })
 
 --TOOLS
-  minetest.register_tool('bees:smoker', {
+  minetest.register_tool('bees_candles:smoker', {
     description = 'smoker',
     inventory_image = 'bees_smoker.png',
     tool_capabilities = {
@@ -623,7 +623,7 @@
     end,
   })
 
-  minetest.register_tool('bees:grafting_tool', {
+  minetest.register_tool('bees_candles:grafting_tool', {
     description = 'grafting tool',
     inventory_image = 'bees_grafting_tool.png',
     tool_capabilities = {
@@ -635,25 +635,25 @@
 
 --COMPATIBILTY --remove after all has been updated
   --ALIASES
-    minetest.register_alias('bees:honey_extractor', 'bees:extractor')
+    minetest.register_alias('bees_candles:honey_extractor', 'bees_candles:extractor')
   --BACKWARDS COMPATIBILITY WITH OLDER VERSION  
-    minetest.register_alias('bees:honey_bottle', 'bees:bottle_honey')
+    minetest.register_alias('bees_candles:honey_bottle', 'bees_candles:bottle_honey')
     minetest.register_abm({
-      nodenames = {'bees:hive', 'bees:hive_artificial_inhabited'},
+      nodenames = {'bees_candles:hive', 'bees_candles:hive_artificial_inhabited'},
       interval = 0,
       chance = 1,
       action = function(pos, node)
-        if node.name == 'bees:hive' then
-          minetest.set_node(pos, { name = 'bees:hive_wild' })
+        if node.name == 'bees_candles:hive' then
+          minetest.set_node(pos, { name = 'bees_candles:hive_wild' })
           local meta = minetest.get_meta(pos)
           local inv  = meta:get_inventory()
-          inv:set_stack('queen', 1, 'bees:queen')
+          inv:set_stack('queen', 1, 'bees_candles:queen')
         end
-        if node.name == 'bees:hive_artificial_inhabited' then
-          minetest.set_node(pos, { name = 'bees:hive_artificial' })
+        if node.name == 'bees_candles:hive_artificial_inhabited' then
+          minetest.set_node(pos, { name = 'bees_candles:hive_artificial' })
           local meta = minetest.get_meta(pos)
           local inv  = meta:get_inventory()
-          inv:set_stack('queen', 1, 'bees:queen')
+          inv:set_stack('queen', 1, 'bees_candles:queen')
           local timer = minetest.get_node_timer(pos)
           timer:start(60)
         end
@@ -662,7 +662,7 @@
 
   --PIPEWORKS
     if minetest.get_modpath("pipeworks") then
-      minetest.register_node('bees:hive_industrial', {
+      minetest.register_node('bees_candles:hive_industrial', {
         description = 'industrial bee hive',
         tiles = { 'bees_hive_industrial.png'},
         paramtype2 = 'facedir',
@@ -672,7 +672,7 @@
           insert_object = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            if stack:get_name() ~= "bees:frame_empty" or stack:get_count() > 1 then
+            if stack:get_name() ~= "bees_candles:frame_empty" or stack:get_count() > 1 then
               return stack
             end
             for i = 1, 8 do
@@ -689,7 +689,7 @@
           can_insert = function(pos,node,stack,direction)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            if stack:get_name() ~= "bees:frame_empty" or stack:get_count() > 1 then
+            if stack:get_name() ~= "bees_candles:frame_empty" or stack:get_count() > 1 then
               return false
             end
             for i = 1, 8 do
@@ -700,7 +700,7 @@
             return false
           end,
           can_remove = function(pos,node,stack,direction)
-            if stack:get_name() == "bees:frame_full" then
+            if stack:get_name() == "bees_candles:frame_full" then
               return 1
             else
               return 0
@@ -721,12 +721,12 @@
         on_rightclick = function(pos, node, clicker, itemstack)
           minetest.show_formspec(
             clicker:get_player_name(),
-            'bees:hive_artificial',
+            'bees_candles:hive_artificial',
             formspecs.hive_artificial(pos)
           )
           local meta = minetest.get_meta(pos)
           local inv  = meta:get_inventory()
-          if meta:get_int('agressive') == 1 and inv:contains_item('queen', 'bees:queen') then
+          if meta:get_int('agressive') == 1 and inv:contains_item('queen', 'bees_candles:queen') then
             local health = clicker:get_hp()
             clicker:set_hp(health-4)
           else
@@ -737,8 +737,8 @@
           local meta = minetest.get_meta(pos)
           local inv = meta:get_inventory()
           local timer = minetest.get_node_timer(pos)
-          if inv:contains_item('queen', 'bees:queen') then
-            if inv:contains_item('frames', 'bees:frame_empty') then
+          if inv:contains_item('queen', 'bees_candles:queen') then
+            if inv:contains_item('frames', 'bees_candles:frame_empty') then
               timer:start(30)
               local rad  = 10
               local minp = {x=pos.x-rad, y=pos.y-rad, z=pos.z-rad}
@@ -752,9 +752,9 @@
                 bees.polinate_flower(flower, minetest.get_node(flower).name)
                 local stacks = inv:get_list('frames')
                 for k, v in pairs(stacks) do
-                  if inv:get_stack('frames', k):get_name() == 'bees:frame_empty' then
+                  if inv:get_stack('frames', k):get_name() == 'bees_candles:frame_empty' then
                     meta:set_int('progress', 0)
-                    inv:set_stack('frames',k,'bees:frame_full')
+                    inv:set_stack('frames',k,'bees_candles:frame_full')
                     return
                   end
                 end
@@ -794,7 +794,7 @@
           if listname == 'queen' or listname == 'frames' then
             meta:set_string('queen', stack:get_name())
             meta:set_string('infotext','queen is inserted, now for the empty frames');
-            if inv:contains_item('frames', 'bees:frame_empty') then
+            if inv:contains_item('frames', 'bees_candles:frame_empty') then
               timer:start(30)
               meta:set_string('infotext','bees are aclimating');
             end
@@ -803,11 +803,11 @@
         allow_metadata_inventory_put = function(pos, listname, index, stack, player)
           if not minetest.get_meta(pos):get_inventory():get_stack(listname, index):is_empty() then return 0 end
           if listname == 'queen' then
-            if stack:get_name():match('bees:queen*') then
+            if stack:get_name():match('bees_candles:queen*') then
               return 1
             end
           elseif listname == 'frames' then
-            if stack:get_name() == ('bees:frame_empty') then
+            if stack:get_name() == ('bees_candles:frame_empty') then
               return 1
             end
           end
@@ -828,78 +828,78 @@ local candles = {};
 
 candles.types = {
 	{
-		unlit = 'bees:candle',
-		lit = 'bees:candle_lit',
+		unlit = 'bees_candles:candle',
+		lit = 'bees_candles:candle_lit',
 		name = 'Candle',
 		ingot = nil,
 		image = 'candles_candle'
 	},
 	{
-		unlit = 'bees:candle_wall_steel',
-		lit = 'bees:candle_wall_steel_lit',
+		unlit = 'bees_candles:candle_wall_steel',
+		lit = 'bees_candles:candle_wall_steel_lit',
 		name = 'Steel Wall-Mount Candle',
 		ingot = 'default:steel_ingot',
 		image = 'candles_candle_steel'
 	},
 	{
-		unlit = 'bees:candle_wall_copper',
-		lit = 'bees:candle_wall_copper_lit',
+		unlit = 'bees_candles:candle_wall_copper',
+		lit = 'bees_candles:candle_wall_copper_lit',
 		name = 'Copper Wall-Mount Candle',
 		ingot = 'moreores:copper_ingot',
 		image = 'candles_candle_copper'
 	},
 	{
-		unlit = 'bees:candle_wall_silver',
-		lit = 'bees:candle_wall_silver_lit',
+		unlit = 'bees_candles:candle_wall_silver',
+		lit = 'bees_candles:candle_wall_silver_lit',
 		name = 'Silver Wall-Mount Candle',
 		ingot = 'moreores:silver_ingot',
 		image = 'candles_candle_silver'
 	},
 	{
-		unlit = 'bees:candle_wall_gold',
-		lit = 'bees:candle_wall_gold_lit',
+		unlit = 'bees_candles:candle_wall_gold',
+		lit = 'bees_candles:candle_wall_gold_lit',
 		name = 'Gold Wall-Mount Candle',
 		ingot = 'moreores:gold_ingot',
 		image = 'candles_candle_gold'
 	},
 	{
-		unlit = 'bees:candle_wall_bronze',
-		lit = 'bees:candle_wall_bronze_lit',
+		unlit = 'bees_candles:candle_wall_bronze',
+		lit = 'bees_candles:candle_wall_bronze_lit',
 		name = 'Bronze Wall-Mount Candle',
 		ingot = 'moreores:bronze_ingot',
 		image = 'candles_candle_bronze'
 	},
 	{
-		unlit = 'bees:candelabra_steel',
-		lit = 'bees:candelabra_steel_lit',
+		unlit = 'bees_candles:candelabra_steel',
+		lit = 'bees_candles:candelabra_steel_lit',
 		name = 'Steel Candelebra',
 		ingot = 'default:steel_ingot',
 		image = 'candles_candelabra_steel'
 	},
 	{
-		unlit = 'bees:candelabra_copper',
-		lit = 'bees:candelabra_copper_lit',
+		unlit = 'bees_candles:candelabra_copper',
+		lit = 'bees_candles:candelabra_copper_lit',
 		name = 'Copper Candelebra',
 		ingot = 'moreores:copper_ingot',
 		image = 'candles_candelabra_copper'
 	},
 	{
-		unlit = 'bees:candelabra_silver',
-		lit = 'bees:candelabra_silver_lit',
+		unlit = 'bees_candles:candelabra_silver',
+		lit = 'bees_candles:candelabra_silver_lit',
 		name = 'Silver Candelebra',
 		ingot = 'moreores:silver_ingot',
 		image = 'candles_candelabra_silver'
 	},
 	{
-		unlit = 'bees:candelabra_gold',
-		lit = 'bees:candelabra_gold_lit',
+		unlit = 'bees_candles:candelabra_gold',
+		lit = 'bees_candles:candelabra_gold_lit',
 		name = 'Gold Candelebra',
 		ingot = 'moreores:gold_ingot',
 		image = 'candles_candelabra_gold'
 	},
 	{
-		unlit = 'bees:candelabra_bronze',
-		lit = 'bees:candelabra_bronze_lit',
+		unlit = 'bees_candles:candelabra_bronze',
+		lit = 'bees_candles:candelabra_bronze_lit',
 		name = 'Bronze Candelebra',
 		ingot = 'moreores:bronze_ingot',
 		image = 'candles_candelabra_bronze'
@@ -1047,7 +1047,7 @@ candles.create_wall = function(ctype)
 	minetest.register_craft({
 		output = ctype.unlit,
 		recipe = {
-			{'bees:candle'},
+			{'bees_candles:candle'},
 			{ctype.ingot},
 		}
 	})
@@ -1156,13 +1156,13 @@ candles.create_candelabra = function(ctype)
 	minetest.register_craft({
 		output = ctype.unlit,
 		recipe = {
-			{'bees:candle','bees:candle','bees:candle'},
+			{'bees_candles:candle','bees_candles:candle','bees_candles:candle'},
 			{ctype.ingot,ctype.ingot,ctype.ingot},
 		}
 	})
 end
 
-minetest.register_node("bees:candle", {
+minetest.register_node("bees_candles:candle", {
 	description = "Candle",
 	tile_images = {"candles_candle_top.png","candles_candle.png"},
 	drawtype = "nodebox",
@@ -1195,14 +1195,14 @@ minetest.register_node("bees:candle", {
 		local wdir = minetest.dir_to_wallmounted(dir)
 
 		if wdir == 1 then
-			minetest.env:add_node(above, {name = 'bees:candle'})
+			minetest.env:add_node(above, {name = 'bees_candles:candle'})
 			itemstack:take_item()
 		end
 		return itemstack
 	end
 })
 
-minetest.register_node("bees:candle_lit", {
+minetest.register_node("bees_candles:candle_lit", {
 	description = "Candle",
 	tile_images = {"candles_candle_top.png","candles_candle_lit.png"},
 	drawtype = "nodebox",
@@ -1212,7 +1212,7 @@ minetest.register_node("bees:candle_lit", {
 	sunlight_propagates = true,
 	walkable = false,
 	light_source = 8,
-	drop = 'bees:candle',
+	drop = 'bees_candles:candle',
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -1236,9 +1236,9 @@ minetest.register_node("bees:candle_lit", {
 })
 
 minetest.register_craft({
-	output = 'bees:candle',
+	output = 'bees_candles:candle',
 	recipe = {
-		{'bees:wax','farming:string','bees:wax'},
+		{'bees_candles:wax','farming:string','bees_candles:wax'},
 	}
 })
 
