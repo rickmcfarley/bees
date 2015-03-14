@@ -5,5 +5,5 @@ to bas080's bees mod: https://github.com/bas080/bees
 
 LICENSE
 -------
-- candles_* textures and code is GPLv3+
+- candles_* textures and code are GPLv3+
 - bees_* textures are CC BY-SA
