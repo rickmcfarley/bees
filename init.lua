@@ -848,7 +848,7 @@ candles.types = {
 		unlit = 'bees_candles:candle_wall_copper',
 		lit = 'bees_candles:candle_wall_copper_lit',
 		name = 'Copper Wall-Mount Candle',
-		ingot = 'moreores:copper_ingot',
+		ingot = 'deafault:copper_ingot',
 		image = 'candles_candle_copper'
 	},
 	{
@@ -869,7 +869,7 @@ candles.types = {
 		unlit = 'bees_candles:candle_wall_bronze',
 		lit = 'bees_candles:candle_wall_bronze_lit',
 		name = 'Bronze Wall-Mount Candle',
-		ingot = 'moreores:bronze_ingot',
+		ingot = 'default:bronze_ingot',
 		image = 'candles_candle_bronze'
 	},
 	{
@@ -883,7 +883,7 @@ candles.types = {
 		unlit = 'bees_candles:candelabra_copper',
 		lit = 'bees_candles:candelabra_copper_lit',
 		name = 'Copper Candelebra',
-		ingot = 'moreores:copper_ingot',
+		ingot = 'default:copper_ingot',
 		image = 'candles_candelabra_copper'
 	},
 	{
@@ -904,7 +904,7 @@ candles.types = {
 		unlit = 'bees_candles:candelabra_bronze',
 		lit = 'bees_candles:candelabra_bronze_lit',
 		name = 'Bronze Candelebra',
-		ingot = 'moreores:bronze_ingot',
+		ingot = 'deafault:bronze_ingot',
 		image = 'candles_candelabra_bronze'
 	},
 }
