@@ -862,7 +862,7 @@ candles.types = {
 		unlit = 'bees_candles:candle_wall_gold',
 		lit = 'bees_candles:candle_wall_gold_lit',
 		name = 'Gold Wall-Mount Candle',
-		ingot = 'moreores:gold_ingot',
+		ingot = 'default:gold_ingot',
 		image = 'candles_candle_gold'
 	},
 	{
@@ -897,7 +897,7 @@ candles.types = {
 		unlit = 'bees_candles:candelabra_gold',
 		lit = 'bees_candles:candelabra_gold_lit',
 		name = 'Gold Candelebra',
-		ingot = 'moreores:gold_ingot',
+		ingot = 'default:gold_ingot',
 		image = 'candles_candelabra_gold'
 	},
 	{
