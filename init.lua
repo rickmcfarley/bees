@@ -1,6 +1,8 @@
 
 -- init.lua
 -- bees + candles minetest mod, by rickmcfarley
+-- It's really just a mix of the bees mod by bas080,
+-- and the candles mod by darkrose 
 -- Copyright (C) Rick McFarley 2015 <rickmcfarley@gmail.com>
 --
 -- This program is free software: you can redistribute it and/or modify
